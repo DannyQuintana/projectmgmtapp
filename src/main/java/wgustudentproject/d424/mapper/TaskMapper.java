@@ -1,22 +1,31 @@
 package wgustudentproject.d424.mapper;
 
 import wgustudentproject.d424.dto.TaskDTO;
+import wgustudentproject.d424.entity.Project;
 import wgustudentproject.d424.entity.Task;
+import wgustudentproject.d424.entity.TaskStatus;
+import wgustudentproject.d424.entity.User;
 
 public class TaskMapper {
 
-    public TaskDTO mapToTaskDTO(Task task){
+    public static TaskDTO mapToTaskDTO(Task task){
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(task.getId());
         taskDTO.setTaskName(task.getTaskName());
         taskDTO.setTaskDescription(task.getTaskDescription());
+        taskDTO.setTaskCommitDate(task.getTaskCommitDate());
+
+        if(taskDTO.getTaskStatus() != null){
+            TaskStatus taskStatus = TaskStatus.valueOf(taskDTO.getTaskStatus());
+            task.setTaskStatus(taskStatus);
+        }
 
         if (task.getTeamMember() != null){
-            taskDTO.setTeamMember(UserMapper.mapToUserDTO(task.getTeamMember()));
+            taskDTO.setTeamMemberId(UserMapper.mapToUserDTO(task.getTeamMember()).getId());
         }
 
         if(task.getProject() != null){
-            taskDTO.setProject(ProjectMapper.mapToProjectDTO(task.getProject()));
+            taskDTO.setProjectId(ProjectMapper.mapToProjectDTO(task.getProject()).getProjectId());
         }
 
         return taskDTO;
@@ -27,15 +36,26 @@ public class TaskMapper {
         task.setId(taskDTO.getId());
         task.setTaskName(taskDTO.getTaskName());
         task.setTaskDescription(taskDTO.getTaskDescription());
+        task.setTaskCommitDate(taskDTO.getTaskCommitDate());
+
+        if(taskDTO.getTaskStatus() != null){
+            TaskStatus taskStatus = TaskStatus.valueOf(taskDTO.getTaskStatus());
+            task.setTaskStatus(taskStatus);
+        }
+
 
         // Map team member
-        if (taskDTO.getTeamMember() != null) {
-            task.setTeamMember(UserMapper.mapToUser(taskDTO.getTeamMember()));
+        if (taskDTO.getTeamMemberId() != null) {
+            User teamMember = new User();
+            teamMember.setId(taskDTO.getTeamMemberId());
+            task.setTeamMember(teamMember);
         }
 
         // Map project
-        if (taskDTO.getProject() != null) {
-            task.setProject(ProjectMapper.mapToProject(taskDTO.getProject()));
+        if (taskDTO.getProjectId() != null) {
+            Project project = new Project();
+            project.setProjectId(taskDTO.getProjectId());
+            task.setProject(project);
         }
 
         return task;

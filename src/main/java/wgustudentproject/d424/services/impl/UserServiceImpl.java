@@ -3,6 +3,7 @@ package wgustudentproject.d424.services.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import wgustudentproject.d424.dto.UserDTO;
+import wgustudentproject.d424.entity.Project;
 import wgustudentproject.d424.entity.User;
 import wgustudentproject.d424.exception.ResourceNotFoundExceptionCustom;
 import wgustudentproject.d424.mapper.UserMapper;
@@ -21,7 +22,6 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
         User user = UserMapper.mapToUser(userDTO);
         User createdUser = userRepository.save(user);
-
         return UserMapper.mapToUserDTO(createdUser);
     }
 
@@ -48,14 +48,16 @@ public class UserServiceImpl implements UserService {
                 () -> new ResourceNotFoundExceptionCustom("User not found.")
         );
 
-        user.setEmail(user.getEmail());
-        user.setFirstName(user.getFirstName());
-        user.setFirstName(user.getLastName());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
 
-        User updateUser = userRepository.save(user);
+        User updatedUser = userRepository.save(user);
 
-        return UserMapper.mapToUserDTO(updateUser);
+        return UserMapper.mapToUserDTO(updatedUser);
     }
+
 
     @Override
     public void deleteUser(int userId) {
@@ -63,6 +65,10 @@ public class UserServiceImpl implements UserService {
                 () -> new ResourceNotFoundExceptionCustom("User not found.")
         );
 
+
+
         userRepository.delete(user);
     }
+
+
 }

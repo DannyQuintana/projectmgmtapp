@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -28,8 +29,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(mappedBy = "teamMembers")
-    private List<Project> projects;
-
+    @Column(name = "password")
+    private String password;
 
 }

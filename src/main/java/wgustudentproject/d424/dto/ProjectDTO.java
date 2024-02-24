@@ -5,16 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectDTO {
-    private int projectId;
+    private Long projectId;
     private String projectTitle;
     private String projectDescription;
-    private UserDTO projectManger;
-    private List<UserDTO> teamMembers;
+    private String projectProgress;
+    private Long projectManagerId;
+    private LocalDate projectCommitDate;
+
+
+
 }

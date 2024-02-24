@@ -6,16 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "tasks")
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "tasks")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "task_name")
     private String taskName;
@@ -23,13 +25,18 @@ public class Task {
     @Column(name = "task_description")
     private String taskDescription;
 
-    // Define the relationship with a single team member
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_status")
+    private TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User teamMember;
 
-    // Define the relationship with a single project
-    @ManyToOne
+    @Column(name = "task_commit_date")
+    private LocalDate taskCommitDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
