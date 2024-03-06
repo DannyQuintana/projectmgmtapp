@@ -1,10 +1,7 @@
 package wgustudentproject.d424.mapper;
 
 import wgustudentproject.d424.dto.UserDTO;
-import wgustudentproject.d424.entity.Project;
 import wgustudentproject.d424.entity.User;
-
-import java.util.stream.Collectors;
 
 public class UserMapper {
 

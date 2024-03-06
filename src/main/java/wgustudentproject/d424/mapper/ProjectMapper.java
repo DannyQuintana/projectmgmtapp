@@ -4,7 +4,6 @@ import wgustudentproject.d424.dto.ProjectDTO;
 import wgustudentproject.d424.entity.Project;
 import wgustudentproject.d424.entity.ProjectStatus;
 import wgustudentproject.d424.entity.User;
-import wgustudentproject.d424.repository.UserRepository;
 
 
 public class ProjectMapper {

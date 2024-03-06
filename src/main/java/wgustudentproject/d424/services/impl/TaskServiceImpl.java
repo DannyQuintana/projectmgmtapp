@@ -3,7 +3,6 @@ package wgustudentproject.d424.services.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import wgustudentproject.d424.dto.TaskDTO;
-import wgustudentproject.d424.entity.ProjectStatus;
 import wgustudentproject.d424.entity.Task;
 import wgustudentproject.d424.entity.TaskStatus;
 import wgustudentproject.d424.exception.ResourceNotFoundExceptionCustom;

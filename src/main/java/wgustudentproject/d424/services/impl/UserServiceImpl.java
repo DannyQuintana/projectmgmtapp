@@ -3,7 +3,6 @@ package wgustudentproject.d424.services.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import wgustudentproject.d424.dto.UserDTO;
-import wgustudentproject.d424.entity.Project;
 import wgustudentproject.d424.entity.User;
 import wgustudentproject.d424.exception.ResourceNotFoundExceptionCustom;
 import wgustudentproject.d424.mapper.UserMapper;
