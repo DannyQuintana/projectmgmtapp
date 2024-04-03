@@ -26,7 +26,7 @@ public class ProjectController {
     }
 
     // Endpoint to get all projects
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public ResponseEntity<List<ProjectDTO>> getAllProjects() {
         List<ProjectDTO> projects = projectService.getAllProjects();

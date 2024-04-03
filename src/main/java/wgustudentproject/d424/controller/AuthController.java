@@ -8,6 +8,7 @@ import wgustudentproject.d424.dto.LoginDTO;
 import wgustudentproject.d424.dto.RegisterDTO;
 import wgustudentproject.d424.services.AuthService;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor

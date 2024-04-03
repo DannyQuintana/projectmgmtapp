@@ -11,6 +11,8 @@ public interface TaskService {
 
     List<TaskDTO> getAllTasks();
 
+    List<TaskDTO> getAllTaskByProjectId(int projectId);
+
     TaskDTO updateTaskProgress(int taskId, TaskDTO taskDTO);
 
     void deleteTask(int taskId);

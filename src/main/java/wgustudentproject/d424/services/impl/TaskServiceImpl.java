@@ -7,6 +7,7 @@ import wgustudentproject.d424.entity.Task;
 import wgustudentproject.d424.entity.TaskStatus;
 import wgustudentproject.d424.exception.ResourceNotFoundExceptionCustom;
 import wgustudentproject.d424.mapper.TaskMapper;
+import wgustudentproject.d424.repository.ProjectRepository;
 import wgustudentproject.d424.repository.TaskRepository;
 import wgustudentproject.d424.services.TaskService;
 
@@ -41,6 +42,15 @@ public class TaskServiceImpl implements TaskService {
         List<Task> allTask = taskRepository.findAll();
 
         return allTask.stream()
+                .map(TaskMapper::mapToTaskDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDTO> getAllTaskByProjectId(int projectId) {
+        List<Task> allTaskByProjectId = taskRepository.findAllByProject_ProjectId(projectId);
+
+        return allTaskByProjectId.stream()
                 .map(TaskMapper::mapToTaskDTO)
                 .collect(Collectors.toList());
     }

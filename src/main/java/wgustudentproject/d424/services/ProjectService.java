@@ -1,7 +1,6 @@
 package wgustudentproject.d424.services;
 
 import wgustudentproject.d424.dto.ProjectDTO;
-import wgustudentproject.d424.dto.UserDTO;
 
 import java.util.List;
 
