@@ -23,20 +23,21 @@ public class TaskController {
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
 
- //   @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getAllTasks() {
         List<TaskDTO> tasks = taskService.getAllTasks();
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("project/{projectId}")
     public ResponseEntity<List<TaskDTO>> getTaskByProjectId(@PathVariable("projectId") int projectId){
         List<TaskDTO> tasks = taskService.getAllTaskByProjectId(projectId);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("{taskId}")
     public ResponseEntity<TaskDTO> getTaskById(@PathVariable("taskId") int taskId) {
         TaskDTO task = taskService.getTaskById(taskId);

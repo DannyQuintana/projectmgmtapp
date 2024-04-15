@@ -1,23 +1,32 @@
 import React, { useState } from "react";
-import { loginAPICall } from "../services/AuthService";
+import { loginAPICall, storeToken, getToken, saveLoggedInUser } from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
 
 const LoginComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
 
     loginAPICall(email, password)
       .then((response) => {
         console.log(response.data);
+
+        const token = "Bearer " + response.data.accessToken;
+        storeToken(token);
+        saveLoggedInUser(email);
+
         navigate("/projects");
+        window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
+        setErrorMessage(
+          "Username or password is incorrect. If you have not been provided login credentials please contact the administrator for assistance."
+        );
       });
   }
 
@@ -60,6 +69,11 @@ const LoginComponent = () => {
                   />
                 </div>
               </div>
+              {errorMessage && (
+                <div className="row mb-3">
+                  <div className="col-md-9 offset-md-2 text-danger">{errorMessage}</div>
+                </div>
+              )}
               <div className="form-group mb=3">
                 <button className="btn btn-primary" onClick={(e) => handleLogin(e)}>
                   Login

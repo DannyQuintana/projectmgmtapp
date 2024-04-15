@@ -17,12 +17,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import wgustudentproject.d424.security.JWTAuthenticationEntryPoint;
+import wgustudentproject.d424.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
 @AllArgsConstructor
 public class SpringSecurityConfig {
     private UserDetailsService userDetailsService;
+    private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -34,11 +40,13 @@ public class SpringSecurityConfig {
 
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests((authorize -> {
             authorize.requestMatchers("/api/auth/**").permitAll();
-            authorize.requestMatchers("api/projects/**").permitAll();
-            authorize.requestMatchers("api/tasks/**").permitAll();
-            authorize.requestMatchers("api/tasks/project/**").permitAll();
-            authorize.anyRequest().authenticated();
+            authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+            authorize.anyRequest().permitAll();
         })).httpBasic(Customizer.withDefaults());
+
+        http.exceptionHandling( exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint));
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -15,6 +15,7 @@ import wgustudentproject.d424.entity.User;
 import wgustudentproject.d424.exception.RegisterAPIException;
 import wgustudentproject.d424.repository.RoleRepository;
 import wgustudentproject.d424.repository.UserRepository;
+import wgustudentproject.d424.security.JwtTokenProvider;
 import wgustudentproject.d424.services.AuthService;
 
 import java.util.HashSet;
@@ -27,6 +28,9 @@ import java.util.Set;
         private RoleRepository roleRepository;
         private PasswordEncoder passwordEncoder;
         private AuthenticationManager authenticationManager;
+
+        private JwtTokenProvider jwtTokenProvider;
+
 
         @Override
         public String register(RegisterDTO registerDTO) {
@@ -64,6 +68,8 @@ import java.util.Set;
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            return "User login successful.";
+            String token = jwtTokenProvider.generateToken(authentication);
+
+            return token;
         }
     }

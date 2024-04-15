@@ -15,10 +15,7 @@ public class TaskMapper {
         taskDTO.setTaskDescription(task.getTaskDescription());
         taskDTO.setTaskCommitDate(task.getTaskCommitDate());
 
-        if(taskDTO.getTaskStatus() != null){
-            TaskStatus taskStatus = TaskStatus.valueOf(taskDTO.getTaskStatus());
-            task.setTaskStatus(taskStatus);
-        }
+        taskDTO.setTaskStatus(task.getTaskStatus().toString());
 
         if (task.getTeamMember() != null){
             taskDTO.setTeamMemberId(UserMapper.mapToUserDTO(task.getTeamMember()).getId());

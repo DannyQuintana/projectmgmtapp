@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { getAllProjects } from "../services/ProjectService";
-import { Link } from "react-router-dom"; // Import Link from React Router
+import { Link } from "react-router-dom";
 import SearchComponent from "./SearchComponent";
 
 const ProjectListComponent = () => {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [projectStatus, setProjectStatus] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,19 +30,37 @@ const ProjectListComponent = () => {
         project.projectTitle.toLowerCase().includes(search.toLowerCase()) ||
         project.projectDescription.toLowerCase().includes(search.toLowerCase()) ||
         project.projectCommitDate.toLowerCase().includes(search.toLowerCase()) ||
-        project.projectDescription.toLowerCase().includes(search.toLowerCase())
+        project.projectProgress.toLowerCase().includes(search.toLowerCase())
       );
     });
     setFilteredProjects(filtered);
+  };
+
+  const getStatus = (status) => {
+    switch (status) {
+      case "Complete":
+        return "bg-success text-white";
+      case "In Progress":
+        return "bg-info text-white";
+      case "Delayed":
+        return "bg-danger text-white";
+      case "Help Requested":
+        return "bg-warning text-dark";
+      default:
+        return "";
+    }
   };
 
   return (
     <div className="container">
       <h1>Projects</h1>
       <div className="row">
-        <div className="col-md-12 mb-4">
+        <div className="col-md-8 mb-4">
           <SearchComponent searchData={projects} onSearch={handleSearch} />
         </div>
+        <Link to="/createproject" className=" col-md-4 mb-4 btn btn-primary">
+          Add New Project
+        </Link>
         {filteredProjects.length === 0 ? (
           <div className="col-md-12">
             <p>No results found.</p>
@@ -49,13 +68,15 @@ const ProjectListComponent = () => {
         ) : (
           filteredProjects.map((project) => (
             <div className="col-md-4" key={project.projectId}>
-              <div className="card mb-4">
+              <div className="card mb-3 ">
+                <div className="text-end bg-transparent">
+                  <Link to={`/editproject/${project.projectId}`}>Edit</Link>
+                </div>
                 <div className="card-body">
-                  <h5 className="card-title">{project.projectTitle}</h5>
+                  <h5 className={`card-title ${getStatus(project.projectProgress)}`}>{project.projectTitle}</h5>
                   <p className="card-text">{project.projectDescription}</p>
                   <p className="card-text">Status: {project.projectProgress}</p>
                   <p className="card-text">Due Date: {project.projectCommitDate}</p>
-                  {/* Use Link to navigate to TaskListComponent */}
                   <Link to={`/tasks/${project.projectId}`} className="btn btn-primary">
                     View Tasks
                   </Link>

@@ -61,9 +61,12 @@ public class TaskServiceImpl implements TaskService {
                 () -> new ResourceNotFoundExceptionCustom("Task not found.")
         );
 
-        taskById.setTaskName(taskDTO.getTaskName());
-        taskById.setTaskDescription(taskDTO.getTaskDescription());
-
+        if(taskDTO.getTaskName() != null) {
+            taskById.setTaskName(taskDTO.getTaskName());
+        }
+        if(taskDTO.getTaskDescription() != null) {
+            taskById.setTaskDescription(taskDTO.getTaskDescription());
+        }
 
         if(taskDTO.getTaskStatus() != null){
             try{

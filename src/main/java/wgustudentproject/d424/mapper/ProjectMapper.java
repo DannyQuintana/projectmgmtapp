@@ -14,8 +14,9 @@ public class ProjectMapper {
         projectDTO.setProjectId(project.getProjectId());
         projectDTO.setProjectTitle(project.getProjectTitle());
         projectDTO.setProjectDescription(project.getProjectDescription());
-        projectDTO.setProjectProgress(project.getProjectStatus().getStatus());
         projectDTO.setProjectCommitDate(project.getProjectCommitDate());
+
+        projectDTO.setProjectProgress(project.getProjectStatus().toString());
 
         if(project.getProjectManager() != null ){
             projectDTO.setProjectManagerId(project.getProjectManager().getId());
