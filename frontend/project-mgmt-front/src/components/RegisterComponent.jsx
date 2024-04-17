@@ -6,10 +6,25 @@ const RegisterComponent = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleRegistrationForm(e) {
     e.preventDefault();
 
+    // Validate fields
+    if (!firstName || !lastName || !email || !password) {
+      setErrorMessage("Please fill out all fields.");
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+
+    // All validations passed, proceed with registration
     const register = { firstName, lastName, email, password };
 
     console.log(register);
@@ -94,6 +109,7 @@ const RegisterComponent = () => {
                   </div>
                 </div>
               </form>
+              {errorMessage && <p className="text-danger">{errorMessage}</p>}
               <div className="form-group mb=3">
                 <button className="btn btn-primary" onClick={(e) => handleRegistrationForm(e)}>
                   Submit

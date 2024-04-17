@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getAllTaskByProjectIdAPICall, getTasksAPICall, updateTaskAPICall } from "../services/TaskService";
 import { Link } from "react-router-dom";
+import { checkRole } from "../services/AuthService"; // Import checkRole function
 
 const TaskListComponent = () => {
   const [tasks, setTasks] = useState([]);
   const { projectId } = useParams();
-  console.log(projectId);
+  const isAdmin = checkRole(); // Check if user is admin
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = projectId ? await getAllTaskByProjectIdAPICall(projectId) : await getTasksAPICall();
         setTasks(response.data);
-        console.log(response.data);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
@@ -58,16 +58,15 @@ const TaskListComponent = () => {
   return (
     <div className="container">
       <h2 className="text-center">Task List</h2>
-
       <div>
         <table className="table table-bordered table-striped">
           <thead>
             <tr>
               <th>Task Title</th>
-              <th>Description</th>
-              <th>Owner</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>Owner & Description</th> {/* Renamed Description as Owner & Description */}
+              <th>Due Date</th> {/* Added Due Date column */}
+              <th>Status</th> {/* Display Status column only if user is admin */}
+              {isAdmin && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -75,7 +74,7 @@ const TaskListComponent = () => {
               <tr key={task.id}>
                 <td>{task.taskName}</td>
                 <td>{task.taskDescription}</td>
-                <td>Bob</td>
+                <td>{task.taskCommitDate}</td> {/* Added Due Date column */}
                 <td className={getStatus(task.taskStatus)}>
                   <select
                     value={task.taskStatus}
@@ -88,19 +87,23 @@ const TaskListComponent = () => {
                     <option value="HELP_REQUESTED">Help Requested</option>
                   </select>
                 </td>
-                <td>
-                  <Link to={`/edittask/${task.id}`} className="btn btn-primary">
-                    Edit Task
-                  </Link>
-                </td>
+                {isAdmin && (
+                  <td>
+                    <Link to={`/edittask/${task.id}`} className="btn btn-primary">
+                      Edit Task
+                    </Link>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <Link to={`/createtask/${projectId}`} className=" col-md-4 mb-4 btn btn-primary">
-        Add New task
-      </Link>
+      {isAdmin && (
+        <Link to={`/createtask/${projectId}`} className=" col-md-4 mb-4 btn btn-primary">
+          Add New Task
+        </Link>
+      )}
     </div>
   );
 };

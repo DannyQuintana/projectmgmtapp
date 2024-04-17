@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import wgustudentproject.d424.dto.JwtAuthResponse;
 import wgustudentproject.d424.dto.LoginDTO;
 import wgustudentproject.d424.dto.RegisterDTO;
 import wgustudentproject.d424.entity.Role;
@@ -19,6 +20,7 @@ import wgustudentproject.d424.security.JwtTokenProvider;
 import wgustudentproject.d424.services.AuthService;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
     @Service
@@ -60,7 +62,7 @@ import java.util.Set;
         }
 
         @Override
-        public String login(LoginDTO loginDTO) {
+        public JwtAuthResponse login(LoginDTO loginDTO) {
            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginDTO.getEmail(),
                     loginDTO.getPassword()
@@ -69,7 +71,24 @@ import java.util.Set;
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String token = jwtTokenProvider.generateToken(authentication);
+            Optional<User> userOptional = userRepository.findByEmail(loginDTO.getEmail());
 
-            return token;
+            String role = null;
+            if (userOptional.isPresent()){
+                User loggedInUser = userOptional.get();
+                Optional<Role> optionalRole = loggedInUser.getRoles().stream().findFirst();
+
+                if(optionalRole.isPresent()){
+                    Role userRole = optionalRole.get();
+                    role = userRole.getName();
+                }
+            }
+
+            JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+            jwtAuthResponse.setRole(role);
+            jwtAuthResponse.setAccessToken(token);
+
+
+            return jwtAuthResponse;
         }
     }

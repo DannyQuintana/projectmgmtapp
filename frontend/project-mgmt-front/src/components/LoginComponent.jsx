@@ -16,8 +16,9 @@ const LoginComponent = () => {
         console.log(response.data);
 
         const token = "Bearer " + response.data.accessToken;
+        const role = response.data.role;
         storeToken(token);
-        saveLoggedInUser(email);
+        saveLoggedInUser(email, role);
 
         navigate("/projects");
         window.location.reload(false);

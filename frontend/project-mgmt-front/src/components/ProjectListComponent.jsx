@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { getAllProjects } from "../services/ProjectService";
 import { Link } from "react-router-dom";
 import SearchComponent from "./SearchComponent";
+import { checkRole } from "../services/AuthService";
 
 const ProjectListComponent = () => {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [projectStatus, setProjectStatus] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +22,9 @@ const ProjectListComponent = () => {
     };
 
     fetchData();
+
+    const adminStatus = checkRole();
+    setIsAdmin(adminStatus);
   }, []);
 
   const handleSearch = (search) => {
@@ -55,25 +59,29 @@ const ProjectListComponent = () => {
     <div className="container">
       <h1>Projects</h1>
       <div className="row">
-        <div className="col-md-8 mb-4">
+        <div className={isAdmin ? "col-md-8 mb-4" : "col-md-12 mb-4"}>
           <SearchComponent searchData={projects} onSearch={handleSearch} />
         </div>
-        <Link to="/createproject" className=" col-md-4 mb-4 btn btn-primary">
-          Add New Project
-        </Link>
+        {isAdmin && (
+          <Link to="/createproject" className="col-md-4 mb-4 btn btn-primary">
+            Add New Project
+          </Link>
+        )}
         {filteredProjects.length === 0 ? (
           <div className="col-md-12">
             <p>No results found.</p>
           </div>
         ) : (
           filteredProjects.map((project) => (
-            <div className="col-md-4" key={project.projectId}>
-              <div className="card mb-3 ">
+            <div className="col-md-4 mb-4" key={project.projectId}>
+              <div className="card shadow">
                 <div className="text-end bg-transparent">
-                  <Link to={`/editproject/${project.projectId}`}>Edit</Link>
+                  {isAdmin && <Link to={`/editproject/${project.projectId}`}>Edit</Link>}
                 </div>
                 <div className="card-body">
-                  <h5 className={`card-title ${getStatus(project.projectProgress)}`}>{project.projectTitle}</h5>
+                  <h5 className={`card-title text-uppercase ${getStatus(project.projectProgress)}`}>
+                    {project.projectTitle}
+                  </h5>
                   <p className="card-text">{project.projectDescription}</p>
                   <p className="card-text">Status: {project.projectProgress}</p>
                   <p className="card-text">Due Date: {project.projectCommitDate}</p>

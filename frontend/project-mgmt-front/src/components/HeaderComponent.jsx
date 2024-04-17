@@ -1,11 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { isUserLoggedIn, logout } from "../services/AuthService";
+import { checkRole, isUserLoggedIn, logout } from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
 
 const HeaderComponent = () => {
   const isAuth = isUserLoggedIn();
   const navigator = useNavigate();
+  const isAdmin = checkRole();
 
   function handleLogout() {
     logout();
@@ -41,7 +42,7 @@ const HeaderComponent = () => {
               )}
             </ul>
             <ul className="navbar-nav">
-              {isAuth && (
+              {isAdmin && (
                 <li className="nav-item">
                   <NavLink to="/reports" className="nav-link">
                     Reports
@@ -49,16 +50,16 @@ const HeaderComponent = () => {
                 </li>
               )}
             </ul>
-          </div>
-          <ul className="navbar-nav">
-            {isAuth && (
-              <li className="nav-item">
-                <NavLink to="/register" className="nav-link">
-                  Register
-                </NavLink>
-              </li>
+            {isAdmin && (
+              <ul className="navbar-nav">
+                <li className="nav-item">
+                  <NavLink to="/register" className="nav-link">
+                    Register
+                  </NavLink>
+                </li>
+              </ul>
             )}
-          </ul>
+          </div>
           <ul className="navbar-nav">
             {!isAuth && (
               <li className="nav-item">

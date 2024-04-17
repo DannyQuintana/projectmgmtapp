@@ -15,6 +15,7 @@ import EditProjectComponent from "./components/EditProjectComponent";
 import TeamListComponent from "./components/TeamListComponent";
 import ReportComponent from "./components/ReportComponent";
 import { isUserLoggedIn } from "./services/AuthService";
+import EditUserComponent from "./components/EditUserComponent";
 
 function App() {
   function AuthenticatedRoute({ children }) {
@@ -72,6 +73,14 @@ function App() {
             element={
               <AuthenticatedRoute>
                 <EditTaskComponent />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/edituser/:userId"
+            element={
+              <AuthenticatedRoute>
+                <EditUserComponent />
               </AuthenticatedRoute>
             }
           />
