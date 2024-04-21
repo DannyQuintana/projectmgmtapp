@@ -50,15 +50,14 @@ const HeaderComponent = () => {
                 </li>
               )}
             </ul>
-            {isAdmin && (
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <NavLink to="/register" className="nav-link">
-                    Register
-                  </NavLink>
-                </li>
-              </ul>
-            )}
+
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <NavLink to="/register" className="nav-link">
+                  Register
+                </NavLink>
+              </li>
+            </ul>
           </div>
           <ul className="navbar-nav">
             {!isAuth && (

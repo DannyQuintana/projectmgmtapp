@@ -108,14 +108,7 @@ function App() {
               </AuthenticatedRoute>
             }
           />
-          <Route
-            path="/register"
-            element={
-              <AuthenticatedRoute>
-                <RegisterComponent />
-              </AuthenticatedRoute>
-            }
-          />
+          <Route path="/register" element={<RegisterComponent />} />
         </Routes>
         <FooterComponnent />
       </div>
