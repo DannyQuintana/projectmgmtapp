@@ -29,10 +29,6 @@ public class Task {
     @Column(name = "task_status")
     private TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User teamMember;
-
     @Column(name = "task_commit_date")
     private LocalDate taskCommitDate;
 

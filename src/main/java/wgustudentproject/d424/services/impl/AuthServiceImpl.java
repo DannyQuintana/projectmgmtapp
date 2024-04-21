@@ -23,72 +23,68 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-    @Service
-    @AllArgsConstructor
-    public class AuthServiceImpl implements AuthService {
-        private UserRepository userRepository;
-        private RoleRepository roleRepository;
-        private PasswordEncoder passwordEncoder;
-        private AuthenticationManager authenticationManager;
+@Service
+@AllArgsConstructor
+public class AuthServiceImpl implements AuthService {
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
 
-        private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
 
-        @Override
-        public String register(RegisterDTO registerDTO) {
-            //Check if email exist in DB
-            if(userRepository.existsByEmail(registerDTO.getEmail())) {
-                throw new RegisterAPIException(HttpStatus.BAD_REQUEST, "Email already registered");
-            }
-
-            //Create user as long as email is not already registered in DB
-            User user = new User();
-            user.setFirstName(registerDTO.getFirstName());
-            user.setLastName(registerDTO.getFirstName());
-            user.setEmail(registerDTO.getEmail());
-            user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-
-            //Setting the role
-            Set<Role> roles = new HashSet<>();
-            Role userRole = roleRepository.findByName("ROLE_USER");
-            roles.add(userRole);
-
-            //Set role of user
-            user.setRoles(roles);
-
-            userRepository.save(user);
-
-            return "User has been registered successfully.";
+    @Override
+    public String register(RegisterDTO registerDTO) {
+        if(userRepository.existsByEmail(registerDTO.getEmail())) {
+            throw new RegisterAPIException(HttpStatus.BAD_REQUEST, "Email already registered");
         }
 
-        @Override
-        public JwtAuthResponse login(LoginDTO loginDTO) {
-           Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginDTO.getEmail(),
-                    loginDTO.getPassword()
-                    ));
+        User user = new User();
+        user.setFirstName(registerDTO.getFirstName());
+        user.setLastName(registerDTO.getFirstName());
+        user.setEmail(registerDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        roles.add(userRole);
 
-            String token = jwtTokenProvider.generateToken(authentication);
-            Optional<User> userOptional = userRepository.findByEmail(loginDTO.getEmail());
+        user.setRoles(roles);
 
-            String role = null;
-            if (userOptional.isPresent()){
-                User loggedInUser = userOptional.get();
-                Optional<Role> optionalRole = loggedInUser.getRoles().stream().findFirst();
+        userRepository.save(user);
 
-                if(optionalRole.isPresent()){
-                    Role userRole = optionalRole.get();
-                    role = userRole.getName();
-                }
-            }
-
-            JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-            jwtAuthResponse.setRole(role);
-            jwtAuthResponse.setAccessToken(token);
-
-
-            return jwtAuthResponse;
-        }
+        return "User has been registered successfully.";
     }
+
+    @Override
+    public JwtAuthResponse login(LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDTO.getEmail(),
+                loginDTO.getPassword()
+        ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtTokenProvider.generateToken(authentication);
+        Optional<User> userOptional = userRepository.findByEmail(loginDTO.getEmail());
+
+        String role = null;
+        if (userOptional.isPresent()){
+            User loggedInUser = userOptional.get();
+            Optional<Role> optionalRole = loggedInUser.getRoles().stream().findFirst();
+
+            if(optionalRole.isPresent()){
+                Role userRole = optionalRole.get();
+                role = userRole.getName();
+            }
+        }
+
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setRole(role);
+        jwtAuthResponse.setAccessToken(token);
+
+
+        return jwtAuthResponse;
+    }
+}

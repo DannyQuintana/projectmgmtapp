@@ -10,6 +10,7 @@ const ReportComponent = () => {
   const [data, setData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportDate, setReportDate] = useState("");
 
   const fetchData = async () => {
     try {
@@ -57,13 +58,19 @@ const ReportComponent = () => {
     setSortedData(filteredData);
   }, [data, searchTerm, dataType]);
 
+  useEffect(() => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString();
+    setReportDate(formattedDate);
+  }, []);
+
   const handleSearch = (search) => {
     setSearchTerm(search);
   };
 
   return (
     <div className="container mt-5">
-      <h2>Project and Task Status Report</h2>
+      <h2>Report generated on {reportDate}</h2>
       <div className="mb-3">
         <label htmlFor="dataType" className="form-label">
           Select Data Type:
@@ -71,11 +78,10 @@ const ReportComponent = () => {
         <select id="dataType" className="form-select" value={dataType} onChange={(e) => setDataType(e.target.value)}>
           <option value="projects">Projects</option>
           <option value="tasks">Tasks</option>
-          <option value="users">Users</option> {/* Added option for Users */}
         </select>
       </div>
       <div className="mb-3">
-        <SearchComponent searchData={sortedData} onSearch={handleSearch} /> {/* Pass sortedData instead of data */}
+        <SearchComponent searchData={sortedData} onSearch={handleSearch} />
       </div>
       <div className="mb-3">
         <StatusBarComponent data={sortedData} dataType={dataType} />

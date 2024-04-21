@@ -16,16 +16,14 @@ public class TaskDTO {
     private String taskName;
     private String taskDescription;
     private String taskStatus;
-    private Long teamMemberId;
     private Long projectId;
     private LocalDate taskCommitDate;
 
-    public TaskDTO(Long id, String taskName, String taskDescription, String taskStatus, Long teamMemberId, LocalDate taskCommitDate) {
+    public TaskDTO(Long id, String taskName, String taskDescription, String taskStatus, LocalDate taskCommitDate) {
         this.id = id;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStatus = taskStatus;
-        this.teamMemberId = teamMemberId;
         this.taskCommitDate = taskCommitDate;
     }
 

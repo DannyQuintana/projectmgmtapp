@@ -1,9 +1,11 @@
 package wgustudentproject.d424.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import wgustudentproject.d424.dto.ProjectDTO;
 import wgustudentproject.d424.services.ProjectService;
@@ -19,8 +21,8 @@ public class ProjectController {
     private ProjectService projectService;
 
   @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
+  @PostMapping
+  public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
         ProjectDTO createdProject = projectService.createProject(projectDTO);
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }

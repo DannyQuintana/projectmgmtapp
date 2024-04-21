@@ -11,6 +11,7 @@ const EditTaskComponent = () => {
     taskStatus: "",
     taskCommitDate: "",
   });
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +37,11 @@ const EditTaskComponent = () => {
 
       const response = await updateTaskAPICall(taskId, task);
       console.log(response.data);
-      navigate(`/tasks/${task.projectId}`);
+      setSuccessMessage("Task updated successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+        navigate(`/tasks/${task.projectId}`);
+      }, 3000); // Clear the success message after 3 seconds
     } catch (error) {
       console.error("Error updating task: ", error);
     }

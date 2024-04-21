@@ -3,6 +3,7 @@ import { getUserByIdAPICall, updateUserAPICall, deleteUserAPICall } from "../ser
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditUserComponent = () => {
+  const navigate = useNavigate();
   const { userId } = useParams();
   const [user, setUser] = useState({
     firstName: "",
@@ -10,6 +11,7 @@ const EditUserComponent = () => {
     email: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,6 +43,11 @@ const EditUserComponent = () => {
     updateUserAPICall(userId, user)
       .then((response) => {
         console.log(response.data);
+        setSuccessMessage("User updated successfully!");
+        setTimeout(() => {
+          setSuccessMessage("");
+          navigate("/teams");
+        }, 3000); // Clear the success message after 3 seconds
       })
       .catch((error) => {
         console.error("Error updating user: ", error);
@@ -115,6 +122,7 @@ const EditUserComponent = () => {
                   />
                 </div>
                 {errorMessage && <p className="text-danger">{errorMessage}</p>}
+                {successMessage && <p className="text-success">{successMessage}</p>}
                 <div className="d-grid gap-2">
                   <button type="submit" className="btn btn-primary">
                     Submit

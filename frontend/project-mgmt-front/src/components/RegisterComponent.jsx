@@ -1,42 +1,45 @@
 import React, { useState } from "react";
 import { registerAPICall } from "../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 const RegisterComponent = () => {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  function handleRegistrationForm(e) {
+  const handleRegistrationForm = (e) => {
     e.preventDefault();
 
-    // Validate fields
     if (!firstName || !lastName || !email || !password) {
       setErrorMessage("Please fill out all fields.");
       return;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setErrorMessage("Please enter a valid email address.");
       return;
     }
 
-    // All validations passed, proceed with registration
     const register = { firstName, lastName, email, password };
-
-    console.log(register);
 
     registerAPICall(register)
       .then((response) => {
         console.log(response.data);
+        setSuccessMessage("User created successfully!");
+        setTimeout(() => {
+          setSuccessMessage("");
+          navigate("/teams");
+        }, 3000);
       })
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
   return (
     <div className="container">
@@ -49,7 +52,7 @@ const RegisterComponent = () => {
             <div className="card-body">
               <form action="">
                 <div className="row mb-3">
-                  <label className="col-md-3 control-label" htmlFor="">
+                  <label className="col-md-3 control-label" htmlFor="firstName">
                     First Name
                   </label>
                   <div className="col-md-9">
@@ -64,7 +67,7 @@ const RegisterComponent = () => {
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <label className="col-md-3 control-label" htmlFor="">
+                  <label className="col-md-3 control-label" htmlFor="lastName">
                     Last Name
                   </label>
                   <div className="col-md-9">
@@ -79,7 +82,7 @@ const RegisterComponent = () => {
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <label className="col-md-3 control-label" htmlFor="">
+                  <label className="col-md-3 control-label" htmlFor="email">
                     Email
                   </label>
                   <div className="col-md-9">
@@ -94,13 +97,13 @@ const RegisterComponent = () => {
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <label className="col-md-3 control-label" htmlFor="">
+                  <label className="col-md-3 control-label" htmlFor="password">
                     Password
                   </label>
                   <div className="col-md-9">
                     <input
                       type="password"
-                      name="email"
+                      name="password"
                       className="form-control"
                       placeholder="Password"
                       value={password}
@@ -111,7 +114,7 @@ const RegisterComponent = () => {
               </form>
               {errorMessage && <p className="text-danger">{errorMessage}</p>}
               <div className="form-group mb=3">
-                <button className="btn btn-primary" onClick={(e) => handleRegistrationForm(e)}>
+                <button className="btn btn-primary" onClick={handleRegistrationForm}>
                   Submit
                 </button>
               </div>

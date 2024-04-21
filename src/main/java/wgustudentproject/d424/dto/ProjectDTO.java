@@ -1,13 +1,15 @@
 package wgustudentproject.d424.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Locale;
+
 
 @Getter
 @Setter
@@ -15,6 +17,7 @@ import java.util.Locale;
 @AllArgsConstructor
 public class ProjectDTO {
     private Long projectId;
+
     private String projectTitle;
     private String projectDescription;
     private String projectProgress;

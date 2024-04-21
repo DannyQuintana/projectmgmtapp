@@ -17,9 +17,6 @@ public class TaskMapper {
 
         taskDTO.setTaskStatus(task.getTaskStatus().toString());
 
-        if (task.getTeamMember() != null){
-            taskDTO.setTeamMemberId(UserMapper.mapToUserDTO(task.getTeamMember()).getId());
-        }
 
         if(task.getProject() != null){
             taskDTO.setProjectId(ProjectMapper.mapToProjectDTO(task.getProject()).getProjectId());
@@ -41,12 +38,6 @@ public class TaskMapper {
         }
 
 
-        // Map team member
-        if (taskDTO.getTeamMemberId() != null) {
-            User teamMember = new User();
-            teamMember.setId(taskDTO.getTeamMemberId());
-            task.setTeamMember(teamMember);
-        }
 
         // Map project
         if (taskDTO.getProjectId() != null) {

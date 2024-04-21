@@ -9,8 +9,7 @@ const CreateTaskComponent = () => {
   const [taskDescription, setTaskDescription] = useState("");
   const [taskCommitDate, setTaskCommitDate] = useState("");
   const [error, setError] = useState("");
-
-  console.log(projectId);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleNewTaskForm = async (e) => {
     e.preventDefault();
@@ -41,7 +40,11 @@ const CreateTaskComponent = () => {
     try {
       const response = await createTaskAPICall(taskData);
       console.log(response.data);
-      navigate(`/tasks/${projectId}`);
+      setSuccessMessage("Task created successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+        navigate(`/tasks/${projectId}`);
+      }, 3000); // Clear the success message after 3 seconds
     } catch (error) {
       console.error("Error creating task: ", error);
     }
@@ -54,6 +57,11 @@ const CreateTaskComponent = () => {
         <div className="col-md-6 offset-md-3">
           <div className="card">
             <div className="card-body">
+              {successMessage && (
+                <div className="alert alert-success" role="alert">
+                  {successMessage}
+                </div>
+              )}
               <form onSubmit={handleNewTaskForm}>
                 <div className="mb-3">
                   <label htmlFor="taskName" className="form-label">
@@ -92,7 +100,7 @@ const CreateTaskComponent = () => {
                   />
                 </div>
                 {error && <p className="text-danger">{error}</p>}
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" disabled={!!successMessage}>
                   Create Task
                 </button>
               </form>

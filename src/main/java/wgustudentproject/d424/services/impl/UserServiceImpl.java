@@ -64,7 +64,9 @@ public class UserServiceImpl implements UserService {
                 () -> new ResourceNotFoundExceptionCustom("User not found.")
         );
 
+        user.setRoles(null);
 
+        userRepository.save(user);
 
         userRepository.delete(user);
     }

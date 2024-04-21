@@ -17,10 +17,9 @@ public class AuthController {
 
     private AuthService authService;
 
-    //Building the register endpoint
-
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO){
+    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO) {
+
         String response = authService.register(registerDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

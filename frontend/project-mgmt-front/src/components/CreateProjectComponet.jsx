@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { createProjectAPICall } from "../services/ProjectService";
+import { useNavigate } from "react-router-dom";
 
 export const CreateProjectComponet = () => {
+  const navigate = useNavigate();
   const [projectTitle, setTitle] = useState("");
   const [projectDescription, setDescription] = useState("");
   const [projectCommitDate, setDueDate] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   function handleNewProjectForm(e) {
     e.preventDefault();
 
-    // Form validation
     if (!projectTitle || !projectDescription || !projectCommitDate) {
       setError("Please fill out all fields.");
       return;
@@ -24,7 +26,7 @@ export const CreateProjectComponet = () => {
       return;
     }
 
-    setError(""); // Clear any previous error message
+    setError("");
 
     const register = { projectTitle, projectDescription, projectCommitDate };
 
@@ -33,10 +35,11 @@ export const CreateProjectComponet = () => {
     createProjectAPICall(register)
       .then((response) => {
         console.log(response.data);
-        // Optionally, you can reset the form fields here
-        setTitle("");
-        setDescription("");
-        setDueDate("");
+        setSuccessMessage("Project created successfully!");
+        setTimeout(() => {
+          setSuccessMessage("");
+          navigate("/projects");
+        }, 2000);
       })
       .catch((error) => {
         console.error(error);
@@ -52,6 +55,11 @@ export const CreateProjectComponet = () => {
               <h2 className="text-center">Create New Project</h2>
             </div>
             <div className="card-body">
+              {successMessage && (
+                <div className="alert alert-success" role="alert">
+                  {successMessage}
+                </div>
+              )}
               <form>
                 <div className="row mb-3">
                   <label className="col-md-3 control-label">Title</label>
@@ -91,7 +99,11 @@ export const CreateProjectComponet = () => {
                 </div>
                 {error && <p className="text-danger">{error}</p>}
                 <div className="form-group mb=3">
-                  <button className="btn btn-primary" onClick={(e) => handleNewProjectForm(e)}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => handleNewProjectForm(e)}
+                    disabled={!!successMessage}
+                  >
                     Submit
                   </button>
                 </div>

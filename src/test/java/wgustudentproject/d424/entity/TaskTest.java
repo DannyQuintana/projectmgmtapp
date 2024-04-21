@@ -12,16 +12,15 @@ class TaskTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialize a sample task before each test
+
         task = new Task();
         task.setId(1L);
         task.setTaskName("Sample Task");
         task.setTaskDescription("Sample Description");
         task.setTaskStatus(TaskStatus.IN_PROGRESS);
-        task.setTeamMember(new User());
         task.setTaskCommitDate(LocalDate.now());
         task.setProject(new Project());
-        // You may set other fields as needed
+
     }
 
     @Test
@@ -30,7 +29,6 @@ class TaskTest {
         assertEquals("Sample Task", task.getTaskName());
         assertEquals("Sample Description", task.getTaskDescription());
         assertEquals(TaskStatus.IN_PROGRESS, task.getTaskStatus());
-        assertNotNull(task.getTeamMember());
         assertEquals(LocalDate.now(), task.getTaskCommitDate());
         assertNotNull(task.getProject());
 

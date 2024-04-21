@@ -11,6 +11,7 @@ const EditProjectComponent = () => {
     projectProgress: "",
     projectCommitDate: "",
   });
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +37,11 @@ const EditProjectComponent = () => {
 
       const response = await updateProjectAPICall(projectId, project);
       console.log(response.data);
-      navigate(`/projects`);
+      setSuccessMessage("Project updated successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+        navigate(`/projects`);
+      }, 3000); // Clear the success message after 3 seconds
     } catch (error) {
       console.error("Error updating task: ", error);
     }
