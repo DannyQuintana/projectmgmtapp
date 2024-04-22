@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getToken } from "./AuthService";
 
-const TASK_REST_API_BASE_URL = "http://54.177.218.168:8080/api/tasks";
+const TASK_REST_API_BASE_URL = "https://localhost:8080/api/tasks";
 
 axios.interceptors.request.use(
   function (config) {
