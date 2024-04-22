@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const USER_REST_API_BASE_URL = "http://localhost:8080/api/user";
+const USER_REST_API_BASE_URL = "http://54.177.218.168:8080/api/user";
 
 export const getAllUsersAPICall = () => axios.get(USER_REST_API_BASE_URL);
 
