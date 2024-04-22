@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
 
         User user = new User();
         user.setFirstName(registerDTO.getFirstName());
-        user.setLastName(registerDTO.getFirstName());
+        user.setLastName(registerDTO.getLastName());
         user.setEmail(registerDTO.getEmail());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
 

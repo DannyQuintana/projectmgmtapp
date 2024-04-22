@@ -41,7 +41,7 @@ const EditTaskComponent = () => {
       setTimeout(() => {
         setSuccessMessage("");
         navigate(`/tasks/${task.projectId}`);
-      }, 3000); // Clear the success message after 3 seconds
+      }, 3000);
     } catch (error) {
       console.error("Error updating task: ", error);
     }
@@ -52,6 +52,11 @@ const EditTaskComponent = () => {
       const id = task.projectId;
       const response = await deleteTaskAPICall(taskId);
       console.log(response.data);
+      setSuccessMessage("Task deleted successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+        navigate(`/projects`);
+      }, 3000);
       navigate(`/tasks/${id}`);
     } catch (error) {
       console.error("Error deleting task: ", error);

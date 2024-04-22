@@ -47,7 +47,7 @@ const EditUserComponent = () => {
         setTimeout(() => {
           setSuccessMessage("");
           navigate("/teams");
-        }, 3000); // Clear the success message after 3 seconds
+        }, 3000);
       })
       .catch((error) => {
         console.error("Error updating user: ", error);
@@ -58,6 +58,11 @@ const EditUserComponent = () => {
     deleteUserAPICall(userId)
       .then((response) => {
         console.log(response.data);
+        setSuccessMessage("User deleted successfully!");
+        setTimeout(() => {
+          setSuccessMessage("");
+          navigate("/teams");
+        }, 3000);
       })
       .catch((error) => {
         console.error("Error deleting user: ", error);

@@ -41,7 +41,7 @@ const EditProjectComponent = () => {
       setTimeout(() => {
         setSuccessMessage("");
         navigate(`/projects`);
-      }, 3000); // Clear the success message after 3 seconds
+      }, 3000);
     } catch (error) {
       console.error("Error updating task: ", error);
     }
@@ -51,6 +51,11 @@ const EditProjectComponent = () => {
     try {
       const response = await deleteProjectAPICall(projectId);
       console.log(response.data);
+      setSuccessMessage("Project deleted successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+        navigate(`/projects`);
+      }, 3000);
       navigate(`/projects`);
     } catch (error) {
       console.error("Error deleting task: ", error);
