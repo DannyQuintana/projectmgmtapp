@@ -42,28 +42,31 @@ To get started with this project, follow these steps:
 2. Navigate into the project directory:
   ```bash
   cd project-management-app
+```
 
 4. Install dependencies:
   ```bash
    npm install
+```
 
 5. Create Jar file
   ```bash
    mvn package
+```
 
 6. Start the frontend and backend servers:
   ```bash
   npm start     # Start frontend server
-   java -jar -[project name] # Start backend server
-
+  java -jar -[project name] # Start backend server
+```
 
 
 ## Usage
 
-  1. Open the application in your web browser.
-   2.  Log in using your credentials.
-   3.  Explore the various features such as creating projects, managing tasks, and contacting other users.
-    4. Enjoy managing your projects efficiently!
+1. Open the application in your web browser.
+2.  Log in using your credentials.
+3.  Explore the various features such as creating projects, managing tasks, and contacting other users.
+4. Enjoy managing your projects efficiently!
 
 ## License
 This project is licensed under the MIT License.
