@@ -67,6 +67,3 @@ To get started with this project, follow these steps:
 2.  Log in using your credentials.
 3.  Explore the various features such as creating projects, managing tasks, and contacting other users.
 4. Enjoy managing your projects efficiently!
-
-## License
-This project is licensed under the MIT License.
